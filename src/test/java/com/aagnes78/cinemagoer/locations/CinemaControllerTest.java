@@ -84,6 +84,7 @@ class CinemaControllerTest {
                 .isEqualTo(JdbcTestUtils.countRowsInTable(jdbcClient, CINEMAS_TABLES));
     }
 
+    @Test
     void listCinemasByCountryFindsAllCinemas() {
         var response = mockMvcTester.get()
                 .uri("/cinemas");
