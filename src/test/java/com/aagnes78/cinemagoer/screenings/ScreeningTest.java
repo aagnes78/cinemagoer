@@ -1,12 +1,13 @@
 package com.aagnes78.cinemagoer.screenings;
 
+import com.aagnes78.cinemagoer.viewings.EndDateBeforeStartDateException;
 import com.aagnes78.cinemagoer.viewings.Screening;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class ScreeningTest {
     @Test
@@ -25,7 +26,7 @@ class ScreeningTest {
     void screeningNotCreatedIfEndDateIsEarlierThanStartDate() {
         var start = LocalDateTime.now();
         var end = LocalDateTime.now().minusDays(1);
-        assertThatIllegalArgumentException().isThrownBy(() ->
+        assertThatExceptionOfType(EndDateBeforeStartDateException.class).isThrownBy(() ->
                 new Screening(1L, 2L, 3L, start, end));
     }
 

@@ -1,6 +1,7 @@
 package com.aagnes78.cinemagoer.viewings;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -120,6 +121,18 @@ public class ScreeningRepository {
                 .param(cinemaId)
                 .query(ScreeningWithIdsAndNames.class)
                 .list();
+    }
+
+    long create(Screening screening) {
+        var sql = """
+                INSERT INTO screenings (filmId, cinemaId, startDate, endDate)
+                VALUES (?, ?, ?, ?);
+                """;
+        var keyHolder = new GeneratedKeyHolder();
+        jdbcClient.sql(sql)
+                .params(screening.getFilmId(),  screening.getCinemaId(), screening.getStartDate(), screening.getEndDate())
+                .update(keyHolder);
+        return keyHolder.getKey().longValue();
     }
 
 

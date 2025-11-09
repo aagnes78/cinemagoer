@@ -1,8 +1,7 @@
 package com.aagnes78.cinemagoer.viewings;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,6 +48,11 @@ public class ScreeningController {
     @GetMapping("films/{id}/screenings/fullInfo")
     public List<ScreeningWithIdsAndNames> findFullInfoByFilmId(@PathVariable long id) {
         return screeningService.findAllInfoByFilmId(id);
+    }
+
+    @PostMapping("screenings")
+    public long addScreening(@RequestBody @Valid NewScreening newScreening) {
+        return screeningService.create(newScreening);
     }
 
 }

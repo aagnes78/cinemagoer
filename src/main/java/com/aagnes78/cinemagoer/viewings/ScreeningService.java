@@ -1,5 +1,7 @@
 package com.aagnes78.cinemagoer.viewings;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +47,21 @@ public class ScreeningService {
 
     List<ScreeningWithIdsAndNames> findAllInfoByCinemaId(long cinemaId) {
         return screeningRepository.findAllInfoByCinemaId(cinemaId);
+    }
+
+    @Transactional
+    long create(NewScreening newScreening) {
+        try {
+            var screening = new Screening(0, newScreening.filmId(),  newScreening.cinemaId(),
+                    newScreening.startDate(), newScreening.endDate());
+            return screeningRepository.create(screening);
+        } catch (EndDateBeforeStartDateException ex) {
+            throw new EndDateBeforeStartDateException();
+        }
+        catch (DuplicateKeyException ex) {
+            throw new ScreeningAlreadyExistsException();
+        } catch (DataIntegrityViolationException ex) {
+            throw new ForeignKeyNotFoundException();
+        }
     }
 }

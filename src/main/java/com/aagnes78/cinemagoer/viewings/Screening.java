@@ -11,7 +11,7 @@ public class Screening {
 
     public Screening(long id, long filmId, long cinemaId, LocalDateTime startDate, LocalDateTime endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("endDate cannot be before startDate");
+            throw new EndDateBeforeStartDateException();
         }
         this.id = id;
         this.filmId = filmId;
